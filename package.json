@@ -1,0 +1,15 @@
+{
+  "name": "skillmarket-backend",
+  "version": "1.0.0",
+  "description": "Skillmarket Backend app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Julian Mateu",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "redis": "^3.0.2"
+  }
+}
