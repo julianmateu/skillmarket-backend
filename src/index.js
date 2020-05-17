@@ -1,25 +1,49 @@
 const express = require('express');
 const { promisify } = require('util');
-require('./db');
+const { client, searchClient } = require('./db');
 const userController = require('./controller/UserController');
 const User = require('./model/User');
 
 const app = express();
 const router = express.Router();
 
-promisify(setTimeout)(3000);
 
-// userController.addUsers();
 
-// userController.findMatches('47dfcf6a-df3b-46d5-a1a7-7158ce1ea525', 500).then(console.log);
-userController.findMatches('4302cef4-8e5c-47b8-9607-873521a82a4f', 1).then(console.log);
+async function test() {
+    await userController.addTestUsers();
+    const users = await userController.retrieveUsers();
+    console.log('users')
+    console.log(users);
 
-// userController.addUser(new User('TestName', 123, '', '', '0,0'));
+    const matches = await userController.findMatches(users.filter(u => u.name === 'Juan')[0].id, 500);
+    console.log('matches');
+    console.log(matches);
 
-// userController.getUsers().then(console.log);
+    const createResponse = await userController.createUser(new User('TestName', 123, '', '', '0,0'));
+    console.log('createResponse');
+    console.log(createResponse);
 
-// userController.getUserById('f092082f-ca39-4d1b-b2f5-afa04e00824f').then(console.log);
-userController.deleteUser('f092082f-ca39-4d1b-b2f5-afa04e00824f').then(console.log);
+    const updateResponse = await userController.updateUser({id: createResponse.id, interests: 'art'});
+    console.log('updateResponse');
+    console.log(updateResponse);
+
+    const user = await userController.findUserById(createResponse.id);
+    console.log('user');
+    console.log(user);
+
+    const allUsers = await userController.retrieveUsers();
+    for (const u of allUsers) {await userController.deleteUser(u.id)}
+
+    const remainingUsers = await userController.retrieveUsers();
+    console.log('All users deleted');
+    console.log(remainingUsers);
+}
+
+// searchClient.dropIndex();
+
+// TODO: make sure database client is ready.
+promisify(setTimeout)(5000);
+test();
 
 router.get('/', (req, res) => {
     res.send('Hello world');
