@@ -12,6 +12,7 @@
     "express": "^4.17.1",
     "redis": "^3.0.2",
     "redis-redisearch": "^1.0.1",
-    "redisearchclient": "https://github.com/stockholmux/RediSearchClient"
+    "redisearchclient": "https://github.com/stockholmux/RediSearchClient",
+    "uuid": "^8.0.0"
   }
 }
