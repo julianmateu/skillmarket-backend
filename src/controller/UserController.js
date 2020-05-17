@@ -6,7 +6,7 @@ const User = require('../model/User');
 
 const getDocAsync = promisify(searchClient.getDoc).bind(searchClient);
 const searchAsync = promisify(searchClient.search).bind(searchClient);
-const delAsync = promisify(searchClient.del).bind(searchClient);
+const delAsync = promisify(searchClient.delDoc).bind(searchClient);
 
 function processDBUser(dbUser) {
     return { ...JSON.parse(JSON.stringify(dbUser.doc)), id: dbUser.docId };

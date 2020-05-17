@@ -19,7 +19,7 @@ userController.findMatches('4302cef4-8e5c-47b8-9607-873521a82a4f', 1).then(conso
 // userController.getUsers().then(console.log);
 
 // userController.getUserById('f092082f-ca39-4d1b-b2f5-afa04e00824f').then(console.log);
-// userController.deleteUser('f092082f-ca39-4d1b-b2f5-afa04e00824f').then(console.log);
+userController.deleteUser('f092082f-ca39-4d1b-b2f5-afa04e00824f').then(console.log);
 
 router.get('/', (req, res) => {
     res.send('Hello world');
