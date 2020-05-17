@@ -10,30 +10,27 @@ client.on("error", function (error) {
     console.error(error);
 });
 
-const searchIndex = 'testSearchIndex2';
-searchClient = redisearchclient(client, searchIndex);
-
-const existsAsync = promisify(client.exists).bind(client);
+const searchIndex = 'testSearchIndex';
+const searchClient = redisearchclient(client, searchIndex);
 
 async function initializeSearchIndexIfNeeded() {
+    const existsAsync = promisify(client.exists).bind(client);
+
+    const createIndexAsync = promisify(searchClient.createIndex).bind(searchClient);
     const exists = await existsAsync('idx:' + searchIndex);
     if (!exists) {
-        searchClient.createIndex([
+        await createIndexAsync([
             searchClient.fieldDefinition.text('name', true, {noStem: true}),
             searchClient.fieldDefinition.numeric('age', true),
             searchClient.fieldDefinition.tag('interests'),
             searchClient.fieldDefinition.tag('expertises'),
             searchClient.fieldDefinition.geo('location', true),
             // searchClient.fieldDefinition.numeric('maxDistKm', true)
-        ], (err) => {
-            if (!exists) {
-                if (err) throw err;
-            }
-        });
+        ]);
     }
+    return searchClient;
 }
-
-initializeSearchIndexIfNeeded();
 
 module.exports.client = client;
 module.exports.searchClient = searchClient;
+module.exports.getSearchClient = initializeSearchIndexIfNeeded;

@@ -1,14 +1,12 @@
-const express = require('express');
-const { promisify } = require('util');
-const { client, searchClient } = require('./db');
+const { getSearchClient } = require('./db');
 const userController = require('./controller/UserController');
 const User = require('./model/User');
 
-const app = express();
-const router = express.Router();
+const app = require('./app')();
 
+getSearchClient().then(() => console.log('Connected to redis...'));
 
-
+// TODO: move to unit tests.
 async function test() {
     await userController.addTestUsers();
     const users = await userController.retrieveUsers();
@@ -39,18 +37,7 @@ async function test() {
     console.log(remainingUsers);
 }
 
-// searchClient.dropIndex();
-
-// TODO: make sure database client is ready.
-promisify(setTimeout)(5000);
-test();
-
-router.get('/', (req, res) => {
-    res.send('Hello world');
-})
-
-app.use('/', router);
-
-const server = app.listen(3000, () => console.log('Server listening on port 3000...'));
+const { PORT = 3000 } = process.env;
+const server = app.listen(PORT, () => console.log(`Server listening on port ${PORT}...`));
 
 module.exports = server;

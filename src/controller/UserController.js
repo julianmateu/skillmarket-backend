@@ -1,7 +1,7 @@
 const { promisify } = require('util');
 const { v4: uuidv4 } = require('uuid');
 
-const { client, searchClient } = require('../db');
+const { searchClient } = require('../db');
 const User = require('../model/User');
 
 const addAsync = promisify(searchClient.add).bind(searchClient);
@@ -66,6 +66,7 @@ async function findMatches(userId, maxDistKm) {
     return results.results;
 }
 
+// TODO: move to unit tests
 function addTestUsers() {
     createUser(new User(
         'Juan',
