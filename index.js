@@ -18,8 +18,8 @@ searchClient = redisearchclient(client, 'testSearchIndex');
 searchClient.createIndex([
     searchClient.fieldDefinition.text('name', true, {noStem: true}),
     searchClient.fieldDefinition.numeric('age', true),
-    searchClient.fieldDefinition.tag('interests', true),
-    searchClient.fieldDefinition.tag('expertises', true),
+    searchClient.fieldDefinition.tag('interests'),
+    searchClient.fieldDefinition.tag('expertises'),
     searchClient.fieldDefinition.geo('location', true)
 ],
     function(err) {
