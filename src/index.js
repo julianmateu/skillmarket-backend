@@ -1,10 +1,7 @@
-const { getSearchClient } = require('./db');
 const userController = require('./controller/UserController');
 const User = require('./model/User');
+const createServer = require('./app');
 
-const app = require('./app')();
-
-getSearchClient().then(() => console.log('Connected to redis...'));
 
 // TODO: move to unit tests.
 async function test() {
@@ -17,11 +14,22 @@ async function test() {
     console.log('matches');
     console.log(matches);
 
-    const createResponse = await userController.createUser(new User('TestName', 123, '', '', '0,0'));
+    const createResponse = await userController.createUser({
+        name: 'TestName',
+        birthDate: '2000-01-01',
+        interests: [''],
+        expertises: [''],
+        password: '1234',
+        email: 's@s.com',
+        location: {
+            longitude: '0',
+            latitude: '0',
+        },
+    });
     console.log('createResponse');
     console.log(createResponse);
 
-    const updateResponse = await userController.updateUser({id: createResponse.id, interests: 'art'});
+    const updateResponse = await userController.updateUser({id: createResponse.id, password: '1234', interests: ['art']});
     console.log('updateResponse');
     console.log(updateResponse);
 
@@ -30,14 +38,14 @@ async function test() {
     console.log(user);
 
     const allUsers = await userController.retrieveUsers();
-    for (const u of allUsers) {await userController.deleteUser(u.id)}
+    for (const u of allUsers) {
+        await userController.deleteUser(u.id)
+    }
 
     const remainingUsers = await userController.retrieveUsers();
     console.log('All users deleted');
     console.log(remainingUsers);
 }
 
-const { PORT = 3000 } = process.env;
-const server = app.listen(PORT, () => console.log(`Server listening on port ${PORT}...`));
+createServer().then(() => test());
 
-module.exports = server;

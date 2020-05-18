@@ -4,20 +4,21 @@ const redisearch = require('redis-redisearch');
 redisearch(redis);
 const redisearchclient = require('redisearchclient');
 
-const client = redis.createClient();
+const { REDIS_OPTIONS, SEARCH_INDEX } = require('./config/db');
+
+const client = redis.createClient(REDIS_OPTIONS);
 
 client.on("error", function (error) {
     console.error(error);
 });
 
-const searchIndex = 'testSearchIndex';
-const searchClient = redisearchclient(client, searchIndex);
+const searchClient = redisearchclient(client, SEARCH_INDEX);
 
 async function initializeSearchIndexIfNeeded() {
     const existsAsync = promisify(client.exists).bind(client);
 
     const createIndexAsync = promisify(searchClient.createIndex).bind(searchClient);
-    const exists = await existsAsync('idx:' + searchIndex);
+    const exists = await existsAsync('idx:' + SEARCH_INDEX);
     if (!exists) {
         await createIndexAsync([
             searchClient.fieldDefinition.text('name', true, {noStem: true}),
