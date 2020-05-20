@@ -7,14 +7,15 @@ const {APP_PORT} = require('./config/app');
 const {client, getSearchClient} = require('./db');
 const users = require('./routes/users');
 const {notFound, serverError} = require('./middleware/errors');
+const cors = require('cors')
 
 
 function createApp(store) {
     const app = express();
-
+    app.post('*', cors())
     app.use(express.json());
     app.use(express.urlencoded({extended: true}));
-
+    app.use("/users",cors());
     app.use(session({...SESSION_OPTIONS, store}));
 
     app.use('/users', users);
