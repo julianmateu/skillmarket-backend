@@ -25,7 +25,6 @@ router.get('/:id', /*auth,*/ catchAsync(async (req, res) => {
 }));
 
 router.post('/', /*auth,*/ catchAsync(async (req, res) => {
-    await validate(registerSchema, req.body);
     const user = await userController.createUser(req.body);
     return res.send(user);
 }));

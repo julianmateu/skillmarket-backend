@@ -6,10 +6,12 @@ const {
 } = require('../config/auth');
 
 const id = Joi.string().guid().required();
+const idOptional = Joi.string().guid();
 
 const email = Joi.string().email().min(8).max(254).lowercase().trim().required();
 
 const name = Joi.string().min(3).max(128).trim().required();
+const nameOptional = Joi.string().min(3).max(128).trim();
 
 const password = Joi.string().min(8).max(BCRYPT_MAX_BYTES, 'utf8')
     .regex(/^(?=.*?[\p{Lu}])(?=.*?[\p{Ll}])(?=.*?\d).*$/u)
@@ -19,28 +21,28 @@ const password = Joi.string().min(8).max(BCRYPT_MAX_BYTES, 'utf8')
 const passwordConfirmation = Joi.valid(Joi.ref('password')).required();
 
 const birthDate = Joi.date().format('YYYY-MM-DD').raw().required();
+const birthDateOptional = Joi.date().format('YYYY-MM-DD').raw();
 
 const interests = Joi.array().items(Joi.string()).required();
+const interestsOptional = Joi.array().items(Joi.string());
 
 const expertises = Joi.array().items(Joi.string()).required();
+const expertisesOptional = Joi.array().items(Joi.string());
 
 const latitude = Joi.number().min(-90).max(90).required();
 
 const longitude = Joi.number().min(-180).max(180).required();
 
-const locationSchema = Joi.object({
-    latitude,
-    longitude,
-});
+const locationSchema = Joi.object({latitude, longitude}).required();
+const locationSchemaOptional = Joi.object({latitude, longitude});
 
 const updateSchema = Joi.object({
     id,
-    email,
-    name,
-    birthDate,
-    expertises,
-    interests,
-    location: locationSchema,
+    name: nameOptional,
+    birthDate: birthDateOptional,
+    expertises: expertisesOptional,
+    interests: interestsOptional,
+    location: locationSchemaOptional,
 });
 
 const registerSchema = Joi.object({
@@ -76,7 +78,7 @@ const forgotPasswordSchema = Joi.object({
 
 const resetPasswordSchema = Joi.object({
     query: Joi.object({
-        id,
+        id: id,
         token: Joi.string().length(PASSWORD_RESET_BYTES * 2).required(),
     }),
     body: Joi.object({
@@ -85,6 +87,8 @@ const resetPasswordSchema = Joi.object({
     }),
 });
 
+module.exports.idSchema = id;
+module.exports.emailSchema = email;
 module.exports.updateSchema = updateSchema;
 module.exports.registerSchema = registerSchema;
 module.exports.loginSchema = loginSchema;

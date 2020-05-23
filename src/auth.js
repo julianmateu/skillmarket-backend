@@ -17,7 +17,7 @@ function logIn(req, userId) {
 }
 
 function logOut(req, res) {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         req.session.destroy((err) => {
             if (err) {
                 reject(err);

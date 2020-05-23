@@ -21,8 +21,10 @@ async function initializeSearchIndexIfNeeded() {
     const exists = await existsAsync('idx:' + SEARCH_INDEX);
     if (!exists) {
         await createIndexAsync([
+            // TODO update fields.
             searchClient.fieldDefinition.text('name', true, {noStem: true}),
-            searchClient.fieldDefinition.numeric('age', true),
+            searchClient.fieldDefinition.text('email', true, {noStem: true}),
+            searchClient.fieldDefinition.text('birthDate', true, {noStem: true}),
             searchClient.fieldDefinition.tag('interests'),
             searchClient.fieldDefinition.tag('expertises'),
             searchClient.fieldDefinition.geo('location', true),

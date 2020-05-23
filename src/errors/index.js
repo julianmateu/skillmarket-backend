@@ -15,6 +15,12 @@ class BadRequest extends HttpError {
     }
 }
 
+class NotFound extends HttpError {
+    constructor (message='Not Found') {
+        super(message, HttpStatus.NOT_FOUND);
+    }
+}
+
 class Unauthorized extends HttpError {
     constructor (message='Unauthorized') {
         super(message, HttpStatus.UNAUTHORIZED);
@@ -23,3 +29,4 @@ class Unauthorized extends HttpError {
 
 module.exports.BadRequest = BadRequest;
 module.exports.Unauthorized = Unauthorized;
+module.exports.NotFound = NotFound;

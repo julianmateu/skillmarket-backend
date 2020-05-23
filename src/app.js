@@ -1,11 +1,13 @@
 const express = require('express');
 const session = require('express-session');
+const morgan = require('morgan');
 const RedisStore = require('connect-redis')(session);
 
 const {SESSION_OPTIONS} = require('./config/session');
 const {APP_PORT} = require('./config/app');
 const {client, getSearchClient} = require('./db');
 const users = require('./routes/users');
+const login = require('./routes/login');
 const {notFound, serverError} = require('./middleware/errors');
 
 
@@ -15,9 +17,12 @@ function createApp(store) {
     app.use(express.json());
     app.use(express.urlencoded({extended: true}));
 
+    app.use(morgan('dev'));
+
     app.use(session({...SESSION_OPTIONS, store}));
 
     app.use('/users', users);
+    app.use('/', login);
 
     app.use(notFound);
 

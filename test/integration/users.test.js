@@ -1,6 +1,7 @@
 const request = require('supertest');
 const HttpStatus = require('http-status-codes');
 const {promisify} = require('util');
+const {v4: uuidv4} = require('uuid');
 const _ = require('lodash');
 
 const {searchClient} = require('../../src/db');
@@ -59,7 +60,7 @@ describe('/users', () => {
         });
 
         it('should return not found if requested user does not exist', async () => {
-            const res = await request(server).get(`/users/1234`);
+            const res = await request(server).get(`/users/${uuidv4()}`);
             expect(res.status).toBe(HttpStatus.NOT_FOUND);
         });
     });

@@ -1,11 +1,13 @@
 const {promisify} = require('util');
 const {v4: uuidv4} = require('uuid');
-const {hash} = require('bcryptjs');
+const {hash, compare} = require('bcryptjs');
+const _ = require('lodash');
 
-const { BCRYPT_WORK_FACTOR } = require('../config/auth');
-const { searchClient } = require('../db');
-const User = require('../model/User');
-const {  } = require('../errors');
+const {BCRYPT_WORK_FACTOR} = require('../config/auth');
+const {searchClient} = require('../db');
+const {registerSchema, idSchema, updateSchema, emailSchema} = require('../validation/auth');
+const {validate} = require('../validation/joi');
+const {NotFound, BadRequest} = require('../errors');
 
 const addAsync = promisify(searchClient.add).bind(searchClient);
 const getDocAsync = promisify(searchClient.getDoc).bind(searchClient);
@@ -13,43 +15,81 @@ const searchAsync = promisify(searchClient.search).bind(searchClient);
 const delAsync = promisify(searchClient.delDoc).bind(searchClient);
 
 async function createUser(user) {
+    await validate(registerSchema, user);
+
+    let found = true;
+    let previous = null;
+    try {
+        previous = await findUserByEmailWithPassword(user.email);
+    } catch (err) {
+        if (err instanceof NotFound) {
+            found = false;
+        } else {
+            throw err;
+        }
+    }
+
+    if (found || previous) {
+        throw new BadRequest("Email already exists");
+    }
+
     const userToAdd = await _getUserToAdd(user);
     const id = uuidv4();
+
     const response = await addAsync(id, userToAdd);
     if (response !== 'OK') {
         throw Error(response);
     }
-    const result = _processDBUser({doc: userToAdd, docId: id});
-    return result;
+    return _processDBUser({doc: userToAdd, docId: id}, false);
 }
 
 async function findUserById(id) {
+    await validate(idSchema, id);
     const dbUser = await getDocAsync(id);
-    return Object.keys(dbUser.doc).length === 0 ? null : _processDBUser({...dbUser, docId: id});
+    if (Object.keys(dbUser.doc).length === 0) {
+        throw new NotFound();
+    }
+    return _processDBUser({...dbUser, docId: id}, false);
+}
+
+async function findUserByEmailWithPassword(email) {
+    await validate(emailSchema, email);
+
+    const query = `@email:${email.replace('@', '/@/')}`;
+    const { results } = await searchAsync(query);
+
+    if (results.length === 0) {
+        throw new NotFound('Email is not registered.');
+    }
+
+    if (results.length > 1) {
+        throw Error('Multiple users with that email.');
+    }
+
+    const dbUser = results[0];
+    return _processDBUser(dbUser, true);
 }
 
 async function retrieveUsers() {
     const result = await searchAsync('*');
-    return result.results.map(_processDBUser);
+    return result.results.map(u => _processDBUser(u, false));
 }
 
 async function updateUser(user) {
+    await validate(updateSchema, user);
     const previousUser = await findUserById(user.id);
 
-    if (!previousUser) {
-        throw Error('User does not exist');
-    }
-
-    const userToAdd = await _getUserToAdd({...previousUser, ...user});
+    const userToAdd = await _getUserToAdd({...previousUser, ...user}, true);
 
     const response = await addAsync(user.id, userToAdd, {extras: ['REPLACE', 'PARTIAL', 'NOCREATE']});
     if (response !== 'OK') {
         throw Error(response);
     }
-    return _processDBUser({ doc: userToAdd, docId: user.id });
+    return _processDBUser({doc: userToAdd, docId: user.id}, false);
 }
 
 async function deleteUser(id) {
+    await validate(idSchema, id);
     const user = await findUserById(id);
     if (!user) return null;
     await delAsync(id);
@@ -67,7 +107,11 @@ async function findMatches(userId, maxDistKm) {
 
     const results = await searchAsync(query);
 
-    return results.results.map(_processDBUser);
+    return results.results.map(u => _processDBUser(u, false));
+}
+
+async function matchesPassword(user, password) {
+    return compare(password, user.password);
 }
 
 // TODO: move to unit tests
@@ -81,7 +125,8 @@ async function addTestUsers() {
             longitude: '-0.017316',
             latitude: '51.508415',
         },
-        password: '1234',
+        password: '1002k0k0Jd',
+        passwordConfirmation: '1002k0k0Jd',
         email: 'juan@juan.com',
     });
 
@@ -94,7 +139,8 @@ async function addTestUsers() {
             longitude: '-0.020798',
             latitude: '51.499090',
         },
-        password: '12039480jfpijwe',
+        password: '12039480jfpIjwe',
+        passwordConfirmation: '12039480jfpIjwe',
         email: 'pedro@pedro.com',
     });
 
@@ -107,7 +153,8 @@ async function addTestUsers() {
             longitude: '-0.189527',
             latitude: '51.528193',
         },
-        password: 'j-24JF0923',
+        password: 'j24JF0923',
+        passwordConfirmation: 'j24JF0923',
         email: 'pepe@pepe.com',
     });
 
@@ -115,33 +162,28 @@ async function addTestUsers() {
         name: 'Marta',
         birthDate: '2000-10-10',
         interests: ['french'],
-        expertises: [''],
+        expertises: ['something'],
         location: {
             longitude: '2.407216',
             latitude: '48.858021',
         },
-        password: 'password',
+        password: 'passwordJ4',
+        passwordConfirmation: 'passwordJ4',
         email: 'martita@s.com',
     });
 }
 
-function _processDBUser(dbUser) {
-    const userToGet = (({
-                            name,
-                            birthDate,
-                            email,
-                            interests,
-                            expertises,
-                            location,
-                        }) => ({
-        name,
-        birthDate,
-        email,
-        interests,
-        expertises,
-        location,
-    }))(dbUser.doc);
-    const result =  { ...JSON.parse(JSON.stringify(userToGet)), id: dbUser.docId };
+function _processDBUser(dbUser, returnInternals=false) {
+    const userToGet = returnInternals ? dbUser.doc : _.pick(dbUser.doc, [
+        'name',
+        'birthDate',
+        'email',
+        'interests',
+        'expertises',
+        'location',
+    ]);
+
+    const result = {...JSON.parse(JSON.stringify(userToGet)), id: dbUser.docId};
     result.interests = result.interests.split(', ');
     result.expertises = result.expertises.split(', ');
     result.location = _getLocationFromString(result.location);
@@ -150,31 +192,25 @@ function _processDBUser(dbUser) {
 }
 
 function _getLocationFromString(s) {
-    const [ longitude, latitude ] = s.split(',');
-    return { longitude, latitude };
+    const [longitude, latitude] = s.split(',');
+    return {longitude, latitude};
 }
 
 
-async function _getUserToAdd(user) {
-    var userToAdd = (({
-                          name,
-                          birthDate,
-                          email,
-                          password,
-                          interests,
-                          expertises,
-                          location,
-                      }) => ({
-        name,
-        birthDate,
-        email,
-        password,
-        interests,
-        expertises,
-        location,
-    }))(user);
+async function _getUserToAdd(user, isUpdate=false) {
+    var userToAdd = _.pick(user, [
+        'name',
+        'birthDate',
+        'email',
+        'password',
+        'interests',
+        'expertises',
+        'location',
+    ]);
 
-    userToAdd.password = await hash(userToAdd.password, BCRYPT_WORK_FACTOR);
+    if (!isUpdate) {
+        userToAdd.password = await hash(userToAdd.password, BCRYPT_WORK_FACTOR);
+    }
     userToAdd.birthDate = new Date(userToAdd.birthDate).toISOString().split('T')[0];
     userToAdd.interests = userToAdd.interests.join(', ');
     userToAdd.expertises = userToAdd.expertises.join(', ');
@@ -209,7 +245,9 @@ function _buildQueryForUser(user, maxDistKm) {
 module.exports.createUser = createUser;
 module.exports.retrieveUsers = retrieveUsers;
 module.exports.findUserById = findUserById;
+module.exports.findUserByEmailWithPassword = findUserByEmailWithPassword;
 module.exports.updateUser = updateUser;
 module.exports.deleteUser = deleteUser;
 module.exports.addTestUsers = addTestUsers;
 module.exports.findMatches = findMatches;
+module.exports.matchesPassword = matchesPassword;

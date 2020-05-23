@@ -19,8 +19,6 @@ router.post('/register', guest, catchAsync(async (req, res) => {
 
     // const { email, name, password } = req.body;
     //
-    // const found = await User.exists({ email });
-    //
     // if (found) {
     //     throw new BadRequest('Invalid email');
     // }
@@ -41,7 +39,7 @@ router.post('/register', guest, catchAsync(async (req, res) => {
     //     text: link
     // });
 
-    res.json({ message: 'OK' });
+    return res.send({ message: 'OK' });
 }));
 
 module.exports = router;
