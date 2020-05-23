@@ -5,7 +5,7 @@ const _ = require('lodash');
 
 const {BCRYPT_WORK_FACTOR} = require('../config/auth');
 const {searchClient} = require('../db');
-const {registerSchema, idSchema, updateSchema, emailSchema} = require('../validation/auth');
+const {registerSchema, idSchema, updateSchema, emailSchema, distanceSchema} = require('../validation/auth');
 const {validate} = require('../validation/joi');
 const {NotFound, BadRequest} = require('../errors');
 
@@ -97,6 +97,8 @@ async function deleteUser(id) {
 }
 
 async function findMatches(userId, maxDistKm) {
+    await validate(idSchema, userId);
+    await validate(distanceSchema, maxDistKm);
     const user = await findUserById(userId);
 
     if (!user) {
@@ -118,6 +120,8 @@ async function matchesPassword(user, password) {
 async function addTestUsers() {
     await createUser({
         name: 'Juan',
+        imageUrl: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        bio: 'I am Juan',
         birthDate: '1992-12-03',
         interests: ['math', 'music'],
         expertises: ['french'],
@@ -132,7 +136,9 @@ async function addTestUsers() {
 
     await createUser({
         name: 'Pedro',
+        imageUrl: 'https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         birthDate: '1984-01-23',
+        bio: 'My name is Pedro, I like surfing.',
         interests: ['math'],
         expertises: ['music'],
         location: {
@@ -146,7 +152,9 @@ async function addTestUsers() {
 
     await createUser({
         name: 'Pepe',
+        imageUrl: 'https://www.biography.com/.image/ar_8:10%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cg_faces:center%2Cq_auto:good%2Cw_620/MTY4MzU0NDMzMjc5NzMxNjcw/julian-castro-sergio-floresbloomberg-via-getty-images-square.jpg',
         birthDate: '1960-04-05',
+        bio: 'Me llamo Pepe y soy re capo',
         interests: ['french'],
         expertises: ['math'],
         location: {
@@ -161,6 +169,8 @@ async function addTestUsers() {
     await createUser({
         name: 'Marta',
         birthDate: '2000-10-10',
+        bio: 'Je suis MARTA',
+        imageUrl: 'https://cdn.pixabay.com/photo/2015/12/15/21/42/person-1094988_960_720.jpg',
         interests: ['french'],
         expertises: ['something'],
         location: {
@@ -181,6 +191,8 @@ function _processDBUser(dbUser, returnInternals=false) {
         'interests',
         'expertises',
         'location',
+        'imageUrl',
+        'bio',
     ]);
 
     const result = {...JSON.parse(JSON.stringify(userToGet)), id: dbUser.docId};
@@ -206,6 +218,8 @@ async function _getUserToAdd(user, isUpdate=false) {
         'interests',
         'expertises',
         'location',
+        'imageUrl',
+        'bio',
     ]);
 
     if (!isUpdate) {

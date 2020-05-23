@@ -16,6 +16,16 @@ router.get('/', /*auth,*/ catchAsync(async (req, res) => {
     return res.send(users);
 }));
 
+router.get('/profile', auth, catchAsync(async (req, res) => {
+    const user = await userController.findUserById(req.session.userId);
+    return res.send(user);
+}));
+
+router.get('/match/:maxKm', auth, catchAsync(async (req, res) => {
+    const users = await userController.findMatches(req.session.userId, req.params.maxKm);
+    return res.send(users);
+}));
+
 router.get('/:id', /*auth,*/ catchAsync(async (req, res) => {
     const user = await userController.findUserById(req.params.id);
     if (!user) {

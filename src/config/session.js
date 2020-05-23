@@ -20,7 +20,7 @@ const SESSION_OPTIONS = {
     cookie: {
         maxAge: +SESSION_IDLE_TIMEOUT,
         secure: IN_PROD,
-        sameSite: true,
+        sameSite: false,
     },
     rolling: true,
     resave: false,

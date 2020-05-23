@@ -43,19 +43,19 @@ async function test() {
     console.log('someemail@s.com');
     console.log(userByEmail);
 
-    const allUsers = await userController.retrieveUsers();
-    for (const u of allUsers) {
-        await userController.deleteUser(u.id)
-    }
-
-    const remainingUsers = await userController.retrieveUsers();
-    console.log('All users deleted');
-    console.log(remainingUsers);
+    // const allUsers = await userController.retrieveUsers();
+    // for (const u of allUsers) {
+    //     await userController.deleteUser(u.id)
+    // }
+    //
+    // const remainingUsers = await userController.retrieveUsers();
+    // console.log('All users deleted');
+    // console.log(remainingUsers);
 }
 
 createServer().then(() => {
-    test()
-    console.log('Server created...')
+    // test();
+    console.log('Server created...');
 })
     .catch(console.error);
 

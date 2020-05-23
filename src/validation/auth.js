@@ -36,6 +36,11 @@ const longitude = Joi.number().min(-180).max(180).required();
 const locationSchema = Joi.object({latitude, longitude}).required();
 const locationSchemaOptional = Joi.object({latitude, longitude});
 
+const imageUrlOptional = Joi.string().uri().min(3).max(512).trim();
+const bioOptional = Joi.string().min(5).max(1024);
+
+const distance = Joi.number().min(0).max(21000).required();
+
 const updateSchema = Joi.object({
     id,
     name: nameOptional,
@@ -43,6 +48,8 @@ const updateSchema = Joi.object({
     expertises: expertisesOptional,
     interests: interestsOptional,
     location: locationSchemaOptional,
+    imageUrl: imageUrlOptional,
+    bio: bioOptional,
 });
 
 const registerSchema = Joi.object({
@@ -54,6 +61,8 @@ const registerSchema = Joi.object({
     location: locationSchema,
     password,
     passwordConfirmation,
+    imageUrl: imageUrlOptional,
+    bio: bioOptional,
 });
 
 const loginSchema = Joi.object({
@@ -96,4 +105,5 @@ module.exports.verifyEmailSchema = verifyEmailSchema;
 module.exports.resendEmailSchema = resendEmailSchema;
 module.exports.forgotPasswordSchema = forgotPasswordSchema;
 module.exports.resetPasswordSchema = resetPasswordSchema;
+module.exports.distanceSchema = distance;
 

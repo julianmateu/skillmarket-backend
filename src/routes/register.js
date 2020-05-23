@@ -12,7 +12,7 @@ const { userController } = require('../controller/UserController');
 
 const router = express.Router();
 
-router.post('/register', guest, catchAsync(async (req, res) => {
+router.post('/', guest, catchAsync(async (req, res) => {
     await validate(registerSchema, req.body);
 
     const user = await userController.createUser(req.body);
