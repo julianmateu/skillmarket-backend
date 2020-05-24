@@ -8,7 +8,7 @@ const { validate } = require('../validation/joi');
 const { BadRequest } = require('../errors');
 const { logIn } = require("../auth");
 const { sendMail } = require('../mail');
-const { userController } = require('../controller/UserController');
+const userController = require('../controller/UserController');
 
 const router = express.Router();
 
