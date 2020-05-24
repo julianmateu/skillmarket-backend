@@ -132,6 +132,7 @@ async function addTestUsers() {
         password: '1002k0k0Jd',
         passwordConfirmation: '1002k0k0Jd',
         email: 'juan@juan.com',
+        gender: "Male"
     });
 
     await createUser({
@@ -148,6 +149,7 @@ async function addTestUsers() {
         password: '12039480jfpIjwe',
         passwordConfirmation: '12039480jfpIjwe',
         email: 'pedro@pedro.com',
+        gender: "Male"
     });
 
     await createUser({
@@ -164,6 +166,8 @@ async function addTestUsers() {
         password: 'j24JF0923',
         passwordConfirmation: 'j24JF0923',
         email: 'pepe@pepe.com',
+        gender: "Male"
+
     });
 
     await createUser({
@@ -180,6 +184,7 @@ async function addTestUsers() {
         password: 'passwordJ4',
         passwordConfirmation: 'passwordJ4',
         email: 'martita@s.com',
+        gender: "Male",
     });
 }
 
@@ -193,6 +198,7 @@ function _processDBUser(dbUser, returnInternals=false) {
         'location',
         'imageUrl',
         'bio',
+        'gender',
     ]);
 
     const result = {...JSON.parse(JSON.stringify(userToGet)), id: dbUser.docId};
@@ -214,6 +220,7 @@ async function _getUserToAdd(user, isUpdate=false) {
         'name',
         'birthDate',
         'email',
+        'gender',
         'password',
         'interests',
         'expertises',

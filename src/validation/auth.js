@@ -41,6 +41,8 @@ const bioOptional = Joi.string().min(5).max(1024);
 
 const distance = Joi.number().min(0).max(21000).required();
 
+const gender= Joi.string().valid("Female","Male","Other").required();
+
 const updateSchema = Joi.object({
     id,
     name: nameOptional,
@@ -50,6 +52,8 @@ const updateSchema = Joi.object({
     location: locationSchemaOptional,
     imageUrl: imageUrlOptional,
     bio: bioOptional,
+    gender: gender
+
 });
 
 const registerSchema = Joi.object({
@@ -63,6 +67,7 @@ const registerSchema = Joi.object({
     passwordConfirmation,
     imageUrl: imageUrlOptional,
     bio: bioOptional,
+    gender: gender
 });
 
 const loginSchema = Joi.object({
