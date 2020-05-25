@@ -9,20 +9,25 @@ const userController = require('../controller/UserController');
 
 const router = express.Router();
 
-// TODO enable auth
-
-router.get('/', /*auth,*/ catchAsync(async (req, res) => {
-    const users = await userController.retrieveUsers();
-    return res.send(users);
-}));
 
 router.get('/profile', auth, catchAsync(async (req, res) => {
     const user = await userController.findUserById(req.session.userId);
     return res.send(user);
 }));
 
+router.put('/profile', auth, catchAsync(async (req, res) => {
+    const user = await userController.updateUser({ ...req.body, id: req.session.userId });
+    return res.send(user);
+}));
+
 router.get('/match/:maxKm', auth, catchAsync(async (req, res) => {
     const users = await userController.findMatches(req.session.userId, req.params.maxKm);
+    return res.send(users);
+}));
+
+// TODO enable auth
+router.get('/', /*auth,*/ catchAsync(async (req, res) => {
+    const users = await userController.retrieveUsers();
     return res.send(users);
 }));
 
