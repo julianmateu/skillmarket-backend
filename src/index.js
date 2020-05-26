@@ -27,6 +27,7 @@ async function test() {
             longitude: '0',
             latitude: '0',
         },
+        gender: 'Male',
     });
     console.log('createResponse');
     console.log(createResponse);

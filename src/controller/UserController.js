@@ -120,71 +120,91 @@ async function matchesPassword(user, password) {
 async function addTestUsers() {
     await createUser({
         name: 'Juan',
-        imageUrl: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-        bio: 'I am Juan',
+        imageUrl: 'https://images.generated.photos/Q1r_2ktVEZBk_6osS-G8SGzIVUCa1IQGj5W_dp4xiMQ/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzA3NzExNDUuanBn.jpg',
+        // imageUrl: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        bio: 'I am a musician and I love art. I would like to meet people who love jazz and walks in the park.',
         birthDate: '1992-12-03',
-        interests: ['math', 'music'],
-        expertises: ['french'],
+        interests: ['math', 'art', 'jazz'],
+        expertises: ['french', 'music'],
         location: {
             longitude: '-0.017316',
             latitude: '51.508415',
         },
         password: '1002k0k0Jd',
         passwordConfirmation: '1002k0k0Jd',
-        email: 'juan@juan.com',
-        gender: "Male"
+        email: 'juan@skillmarket.com',
+        gender: "Male",
     });
 
     await createUser({
         name: 'Pedro',
-        imageUrl: 'https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+        imageUrl: 'https://images.generated.photos/R2JFP1ebaEziLj7DDxflzAG_BU6T1GYd-ShH6xPWsqY/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzAwMDk2MjIuanBn.jpg',
+        // imageUrl: 'https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         birthDate: '1984-01-23',
-        bio: 'My name is Pedro, I like surfing.',
-        interests: ['math'],
-        expertises: ['music'],
+        bio: 'My name is Pedro, I am spanish and I like surfing. Let\'s talk and practise sports together',
+        interests: ['art', 'sports', 'music'],
+        expertises: ['surf', 'math'],
         location: {
             longitude: '-0.020798',
             latitude: '51.499090',
         },
         password: '12039480jfpIjwe',
         passwordConfirmation: '12039480jfpIjwe',
-        email: 'pedro@pedro.com',
-        gender: "Male"
+        email: 'pedro@skillmarket.com',
+        gender: "Male",
     });
 
     await createUser({
-        name: 'Pepe',
-        imageUrl: 'https://www.biography.com/.image/ar_8:10%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cg_faces:center%2Cq_auto:good%2Cw_620/MTY4MzU0NDMzMjc5NzMxNjcw/julian-castro-sergio-floresbloomberg-via-getty-images-square.jpg',
-        birthDate: '1960-04-05',
-        bio: 'Me llamo Pepe y soy re capo',
-        interests: ['french'],
-        expertises: ['math'],
+        name: 'Ted',
+        imageUrl: 'https://images.generated.photos/FdlezoWEFR-2X5QMTN9_PxpIiz11RSL4aQD4GK9vxR8/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzA5OTgwNDUuanBn.jpg',
+        // imageUrl: 'https://www.biography.com/.image/ar_8:10%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cg_faces:center%2Cq_auto:good%2Cw_620/MTY4MzU0NDMzMjc5NzMxNjcw/julian-castro-sergio-floresbloomberg-via-getty-images-square.jpg',
+        birthDate: '1979-04-05',
+        bio: 'I am a film producer and teach photography. I would like to learn more about science.',
+        interests: ['math', 'science'],
+        expertises: ['art', 'photography', 'films'],
         location: {
             longitude: '-0.189527',
             latitude: '51.528193',
         },
         password: 'j24JF0923',
         passwordConfirmation: 'j24JF0923',
-        email: 'pepe@pepe.com',
-        gender: "Male"
+        email: 'ted@skillmarket.com',
+        gender: "Male",
 
     });
 
     await createUser({
-        name: 'Marta',
+        name: 'Akari',
         birthDate: '2000-10-10',
-        bio: 'Je suis MARTA',
-        imageUrl: 'https://cdn.pixabay.com/photo/2015/12/15/21/42/person-1094988_960_720.jpg',
-        interests: ['french'],
-        expertises: ['something'],
+        bio: 'I want to learn to play the guitar, and I can teach you french in exchange!',
+        imageUrl: 'https://images.generated.photos/LrQ7S_IFhuREjDX82pe_q7ncjW_jHYjQrvgpz6SBY9g/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzAzODI3OTMuanBn.jpg',
+        interests: ['guitar', 'music', 'jazz'],
+        expertises: ['french'],
         location: {
-            longitude: '2.407216',
-            latitude: '48.858021',
+            longitude: '-0.073563',
+            latitude: '51.494493',
         },
         password: 'passwordJ4',
         passwordConfirmation: 'passwordJ4',
-        email: 'martita@s.com',
-        gender: "Male",
+        email: 'akari@skillmarket.com',
+        gender: "Female",
+    });
+
+    await createUser({
+        name: 'Liz',
+        birthDate: '1987-10-10',
+        bio: 'I am a lawyer but enjoy going to museums on my free time. I want to learn about photography.',
+        imageUrl: 'https://images.generated.photos/xFe8q_crSDkFTuhSxipofWaPtaajD4vdpHuT1mXnTmA/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzAxOTU0MDEuanBn.jpg',
+        interests: ['photography', 'music'],
+        expertises: ['french', 'law'],
+        location: {
+            longitude: '-0.104910',
+            latitude: '51.532530',
+        },
+        password: 'passwordJ4',
+        passwordConfirmation: 'passwordJ4',
+        email: 'liz@skillmarket.com',
+        gender: "Female",
     });
 }
 
