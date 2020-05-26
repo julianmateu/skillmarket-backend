@@ -1,6 +1,6 @@
 const CORS_OPTIONS = {
     origin: 'http://localhost:8080',
-    methods:['GET','POST'],
+    methods:['GET','POST','PUT'],
     credentials: true,
 };
 

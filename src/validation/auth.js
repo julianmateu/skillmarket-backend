@@ -9,6 +9,8 @@ const id = Joi.string().guid().required();
 const idOptional = Joi.string().guid();
 
 const email = Joi.string().email().min(8).max(254).lowercase().trim().required();
+const emailOptional = Joi.string().email().min(8).max(254).lowercase().trim();
+
 
 const name = Joi.string().min(3).max(128).trim().required();
 const nameOptional = Joi.string().min(3).max(128).trim();
@@ -47,6 +49,7 @@ const genderOptional = Joi.string().valid("Female","Male","Other");
 const updateSchema = Joi.object({
     id,
     name: nameOptional,
+    email: emailOptional,
     birthDate: birthDateOptional,
     expertises: expertisesOptional,
     interests: interestsOptional,
