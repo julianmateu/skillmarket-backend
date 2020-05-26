@@ -15,34 +15,34 @@ async function test() {
     console.log('matches');
     console.log(matches);
 
-    const createResponse = await userController.createUser({
-        name: 'TestName',
-        birthDate: '2000-01-01',
-        interests: ['none'],
-        expertises: ['none'],
-        password: 'TheSuperPassword1234',
-        passwordConfirmation: 'TheSuperPassword1234',
-        email: 'someemail@s.com',
-        location: {
-            longitude: '0',
-            latitude: '0',
-        },
-        gender: 'Male',
-    });
-    console.log('createResponse');
-    console.log(createResponse);
-
-    const updateResponse = await userController.updateUser({id: createResponse.id, interests: ['art']});
-    console.log('updateResponse');
-    console.log(updateResponse);
-
-    const user = await userController.findUserById(createResponse.id);
-    console.log('user');
-    console.log(user);
-
-    const userByEmail = await userController.findUserByEmailWithPassword('someemail@s.com');
-    console.log('someemail@s.com');
-    console.log(userByEmail);
+    // const createResponse = await userController.createUser({
+    //     name: 'TestName',
+    //     birthDate: '2000-01-01',
+    //     interests: ['none'],
+    //     expertises: ['none'],
+    //     password: 'TheSuperPassword1234',
+    //     passwordConfirmation: 'TheSuperPassword1234',
+    //     email: 'someemail@s.com',
+    //     location: {
+    //         longitude: '0',
+    //         latitude: '0',
+    //     },
+    //     gender: 'Male',
+    // });
+    // console.log('createResponse');
+    // console.log(createResponse);
+    //
+    // const updateResponse = await userController.updateUser({id: createResponse.id, interests: ['art']});
+    // console.log('updateResponse');
+    // console.log(updateResponse);
+    //
+    // const user = await userController.findUserById(createResponse.id);
+    // console.log('user');
+    // console.log(user);
+    //
+    // const userByEmail = await userController.findUserByEmailWithPassword('someemail@s.com');
+    // console.log('someemail@s.com');
+    // console.log(userByEmail);
 
     // const allUsers = await userController.retrieveUsers();
     // for (const u of allUsers) {
