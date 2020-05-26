@@ -21,8 +21,8 @@ const password = Joi.string().min(8).max(BCRYPT_MAX_BYTES, 'utf8')
     .required();
 const passwordOptional = Joi.string().min(8).max(BCRYPT_MAX_BYTES, 'utf8')
     .regex(/^(?=.*?[\p{Lu}])(?=.*?[\p{Ll}])(?=.*?\d).*$/u)
-    .message('"{#label}" must contain one uppercase letter, one lowercase letter, and one digit')
-    .allow("")
+    .message('"{#label}" must contain one uppercase letter, one lowercase letter, and one digit');
+
 const passwordConfirmation = Joi.valid(Joi.ref('password'));
 const passwordConfirmationOptional =  Joi.valid(Joi.ref('password'));
 
@@ -63,20 +63,20 @@ const updateSchema = Joi.object({
     imageUrl: imageUrlOptional,
     bio: bioOptional,
     gender: genderOptional,
-});
+}).with('password', 'passwordConfirmation');
 
 const registerSchema = Joi.object({
     email,
-    name,
-    birthDate,
-    expertises,
-    interests,
-    location: locationSchema,
+    name: nameOptional,
+    birthDate: birthDateOptional,
+    expertises: expertisesOptional,
+    interests: interestsOptional,
+    location: locationSchemaOptional,
     password,
     passwordConfirmation,
     imageUrl: imageUrlOptional,
     bio: bioOptional,
-    gender: gender
+    gender: genderOptional,
 });
 
 const loginSchema = Joi.object({

@@ -79,10 +79,12 @@ async function updateUser(user) {
     await validate(updateSchema, user);
     const previousUser = await findUserById(user.id);
 
-    const userToAdd = await _getUserToAdd({...previousUser, ...user}, true);
+    // TODO we probably need a different method only for updating the credentials.
+    const userToAdd = await _getUserToAdd({...previousUser, ...user}, !user.password);
 
     const response = await addAsync(user.id, userToAdd, {extras: ['REPLACE', 'PARTIAL', 'NOCREATE']});
     if (response !== 'OK') {
+        console.log(JSON.stringify(response));
         throw Error(response);
     }
     return _processDBUser({doc: userToAdd, docId: user.id}, false);
@@ -222,9 +224,9 @@ function _processDBUser(dbUser, returnInternals=false) {
     ]);
 
     const result = {...JSON.parse(JSON.stringify(userToGet)), id: dbUser.docId};
-    result.interests = result.interests.split(', ');
-    result.expertises = result.expertises.split(', ');
-    result.location = _getLocationFromString(result.location);
+    result.interests = result.interests ? result.interests.split(', ') : [];
+    result.expertises = result.expertises ? result.expertises.split(', ') : [];
+    result.location = result.location ? _getLocationFromString(result.location) : undefined;
 
     return result;
 }
@@ -252,10 +254,13 @@ async function _getUserToAdd(user, isUpdate=false) {
     if (!isUpdate) {
         userToAdd.password = await hash(userToAdd.password, BCRYPT_WORK_FACTOR);
     }
-    userToAdd.birthDate = new Date(userToAdd.birthDate).toISOString().split('T')[0];
-    userToAdd.interests = userToAdd.interests.join(', ');
-    userToAdd.expertises = userToAdd.expertises.join(', ');
-    userToAdd.location = `${userToAdd.location.longitude},${userToAdd.location.latitude}`;
+    userToAdd.name = userToAdd.name ? userToAdd.name : undefined;
+    userToAdd.birthDate = userToAdd.birthDate ? new Date(userToAdd.birthDate).toISOString().split('T')[0] : undefined;
+    userToAdd.interests = userToAdd.interests ? userToAdd.interests.join(', ') : undefined;
+    userToAdd.expertises = userToAdd.expertises ? userToAdd.expertises.join(', ') : undefined;
+    userToAdd.location = userToAdd.location ? `${userToAdd.location.longitude},${userToAdd.location.latitude}` : undefined;
+
+    Object.keys(userToAdd).forEach(key => userToAdd[key] === undefined ? delete userToAdd[key] : {});
 
     return userToAdd;
 }
