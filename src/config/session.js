@@ -10,7 +10,7 @@ const {
     SESSION_SECRET = 'please keep this secret, mate',
     SESSION_NAME = 'sid',
     SESSION_IDLE_TIMEOUT = THIRTY_MINUTES,
-} = env;
+} = process.env;
 
 const SESSION_ABSOLUTE_TIMEOUT = +(env.SESSION_ABSOLUTE_TIMEOUT || SIX_HOURS);
 
