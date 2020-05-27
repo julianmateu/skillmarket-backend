@@ -1,5 +1,9 @@
+const {
+    CORS_ORIGIN_HOST = 'http://localhost:8080'
+} = process.env;
+
 const CORS_OPTIONS = {
-    origin: 'http://localhost:8080',
+    origin: CORS_ORIGIN_HOST,
     methods:['GET','POST','PUT'],
     credentials: true,
 };
