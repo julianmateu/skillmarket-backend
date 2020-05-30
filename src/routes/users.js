@@ -39,6 +39,8 @@ router.get('/:id', auth, catchAsync(async (req, res) => {
     return res.send(user);
 }));
 
+// TODO: enable these routes for admin users
+
 // router.post('/', /*auth,*/ catchAsync(async (req, res) => {
 //     const user = await userController.createUser(req.body);
 //     return res.send(user);

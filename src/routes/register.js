@@ -17,6 +17,8 @@ router.post('/', guest, catchAsync(async (req, res) => {
 
     const user = await userController.createUser(req.body);
 
+    // TODO: enable email confirmation
+
     // const { email, name, password } = req.body;
     //
     // if (found) {

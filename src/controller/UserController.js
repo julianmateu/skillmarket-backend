@@ -123,7 +123,6 @@ async function addTestUsers() {
     await createUser({
         name: 'Juan',
         imageUrl: 'https://images.generated.photos/Q1r_2ktVEZBk_6osS-G8SGzIVUCa1IQGj5W_dp4xiMQ/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzA3NzExNDUuanBn.jpg',
-        // imageUrl: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         bio: 'I am a musician and I love art. I would like to meet people who love jazz and walks in the park.',
         birthDate: '1992-12-03',
         interests: ['math', 'art', 'jazz'],
@@ -141,7 +140,6 @@ async function addTestUsers() {
     await createUser({
         name: 'Pedro',
         imageUrl: 'https://images.generated.photos/R2JFP1ebaEziLj7DDxflzAG_BU6T1GYd-ShH6xPWsqY/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzAwMDk2MjIuanBn.jpg',
-        // imageUrl: 'https://images.pexels.com/photos/736716/pexels-photo-736716.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         birthDate: '1984-01-23',
         bio: 'My name is Pedro, I am spanish and I like surfing. Let\'s talk and practise sports together',
         interests: ['art', 'sports', 'music'],
@@ -159,7 +157,6 @@ async function addTestUsers() {
     await createUser({
         name: 'Ted',
         imageUrl: 'https://images.generated.photos/FdlezoWEFR-2X5QMTN9_PxpIiz11RSL4aQD4GK9vxR8/rs:fit:512:512/Z3M6Ly9nZW5lcmF0/ZWQtcGhvdG9zL3Yz/XzA5OTgwNDUuanBn.jpg',
-        // imageUrl: 'https://www.biography.com/.image/ar_8:10%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cg_faces:center%2Cq_auto:good%2Cw_620/MTY4MzU0NDMzMjc5NzMxNjcw/julian-castro-sergio-floresbloomberg-via-getty-images-square.jpg',
         birthDate: '1979-04-05',
         bio: 'I am a film producer and teach photography. I would like to learn more about science.',
         interests: ['math', 'science'],

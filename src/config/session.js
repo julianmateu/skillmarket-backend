@@ -7,7 +7,7 @@ const SIX_HOURS = ONE_HOUR * 6;
 const { env } = process;
 
 const {
-    SESSION_SECRET = 'please keep this secret, mate',
+    SESSION_SECRET = 'session_secret',
     SESSION_NAME = 'sid',
     SESSION_IDLE_TIMEOUT = THIRTY_MINUTES,
 } = process.env;
@@ -19,7 +19,8 @@ const SESSION_OPTIONS = {
     name: SESSION_NAME,
     cookie: {
         maxAge: +SESSION_IDLE_TIMEOUT,
-        secure: false,//IN_PROD,
+        // TODO: Enable secure
+        secure: false, // IN_PROD,
         sameSite: false,
     },
     rolling: true,
