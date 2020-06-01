@@ -41,7 +41,7 @@ docker run -p 6379:6379 redislabs/redisearch:latest
 If you want to set a password, you can ssh to the docker container and run the `config` command in `redis-cli`:
 ```bash
 $ docker exec -it <your-container-name> redis-cli
-> config set requirepass
+> config set requirepass <your-password>
 ```
 
 ## Deployment
@@ -49,10 +49,10 @@ $ docker exec -it <your-container-name> redis-cli
 You will need to define the following Environment variables:
 
 ```bash
-REDIS_HOST='<your redis host IP>'
-REDIS_PASSWORD='<your redis passowrd>'
-APP_HOSTNAME='<your app hostname>'
-PORT='<your app port>'
-CORS_ORIGIN_HOST='<the url of the frontend>'
-SESSION_SECRET='<your express session secret>'
+REDIS_HOST="your-redis-host-IP"
+REDIS_PASSWORD="your-redis-passowrd"
+APP_HOSTNAME="your-app-hostname"
+PORT="your-app-port"
+CORS_ORIGIN_HOST="the-url-of-the-frontend"
+SESSION_SECRET="your-express-session-secret"
 ```
