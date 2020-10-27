@@ -21,6 +21,7 @@ const SESSION_OPTIONS = {
         maxAge: +SESSION_IDLE_TIMEOUT,
         secure: true,
         sameSite: 'none',
+        httpOnly: true,
     },
     rolling: true,
     resave: false,
