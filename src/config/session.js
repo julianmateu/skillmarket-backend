@@ -19,8 +19,7 @@ const SESSION_OPTIONS = {
     name: SESSION_NAME,
     cookie: {
         maxAge: +SESSION_IDLE_TIMEOUT,
-        // TODO: Enable secure
-        secure: false, // IN_PROD,
+        secure: IN_PROD,
         sameSite: 'none',
     },
     rolling: true,
