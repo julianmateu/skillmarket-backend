@@ -21,7 +21,7 @@ const SESSION_OPTIONS = {
         maxAge: +SESSION_IDLE_TIMEOUT,
         // TODO: Enable secure
         secure: false, // IN_PROD,
-        sameSite: false,
+        sameSite: 'none',
     },
     rolling: true,
     resave: false,
