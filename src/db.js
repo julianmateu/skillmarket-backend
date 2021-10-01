@@ -20,16 +20,22 @@ async function initializeSearchIndexIfNeeded() {
     const createIndexAsync = promisify(searchClient.createIndex).bind(searchClient);
     const exists = await existsAsync('idx:' + SEARCH_INDEX);
     if (!exists) {
-        await createIndexAsync([
-            // TODO update fields.
-            searchClient.fieldDefinition.text('name', true, {noStem: true}),
-            searchClient.fieldDefinition.text('email', true, {noStem: true}),
-            searchClient.fieldDefinition.text('birthDate', true, {noStem: true}),
-            searchClient.fieldDefinition.tag('interests'),
-            searchClient.fieldDefinition.tag('expertises'),
-            searchClient.fieldDefinition.geo('location', true),
-            // searchClient.fieldDefinition.numeric('maxDistKm', true)
-        ]);
+        try {
+            await createIndexAsync([
+                // TODO update fields.
+                searchClient.fieldDefinition.text('name', true, { noStem: true }),
+                searchClient.fieldDefinition.text('email', true, { noStem: true }),
+                searchClient.fieldDefinition.text('birthDate', true, { noStem: true }),
+                searchClient.fieldDefinition.tag('interests'),
+                searchClient.fieldDefinition.tag('expertises'),
+                searchClient.fieldDefinition.geo('location', true),
+                // searchClient.fieldDefinition.numeric('maxDistKm', true)
+            ]);
+        } catch (error) {
+            if (!(error instanceof redis.ReplyError && error.message === 'Index already exists')) {
+                throw error;
+            }
+        }
     }
     return searchClient;
 }

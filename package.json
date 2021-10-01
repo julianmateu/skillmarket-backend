@@ -4,6 +4,7 @@
   "description": "Skillmarket Backend app",
   "main": "src/index.js",
   "scripts": {
+    "serve": "nodemon src",
     "start": "node src",
     "test": "NODE_ENV=test jest --watchAll --verbose --runInBand --detectOpenHandles --coverage"
   },
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "jest": "^26.0.1",
+    "nodemon": "^2.0.13",
     "supertest": "^4.0.2"
   }
 }

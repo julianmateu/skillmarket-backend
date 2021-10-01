@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skillmarket-backend-deployment 
+  labels:
+    app: skillmarket-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skillmarket-backend
+  template:
+    metadata:
+      labels:
+        app: skillmarket-backend
+    spec:
+      containers:
+      - name: skillmarket-backend
+        image: skillmarket-backend
+        imagePullPolicy: Never
+        env:
+        - name: REDIS_HOST
+          value: redis-cluster-ip
+        - name: CORS_ORIGIN_HOST
+          value: "http://localhost:61218"
+        ports:
+        - containerPort: 3000

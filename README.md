@@ -44,6 +44,33 @@ $ docker exec -it <your-container-name> redis-cli
 > config set requirepass <your-password>
 ```
 
+## Local development
+
+To develop locally, you can use Skaffold to build the Docker image and deplooy to a Kubernetes cluster (minikube).
+
+### Requirements
+* [Docker](https://www.docker.com/)
+* [Minikube](https://minikube.sigs.k8s.io/docs/start/)
+* [Skaffold](https://skaffold.dev/)
+
+Start the minikube node:
+```bash
+minikube start
+```
+
+Update the value of the `CORS_ORIGIN_HOST` env variable with the URL for the frontend in the [k8s deployment config](./k8s/deploy.yml). If the frontend runs locally with skaffold too, just change the port to the output of `minikube service skillmarket-front-node-port`
+
+### Run in dev mode with Skaffold
+In one terminal run skaffold in dev mode, which will run a dev server which refreshes on code change.
+```bash
+skaffold dev
+```
+
+To access the server locally, just forward the service port locally with minikube:
+```bash
+minikube service skillmarket-backend-node-port
+```
+
 ## Deployment
 
 You will need to define the following Environment variables:
